@@ -16,20 +16,25 @@ class User(models.Model):
     u_name = models.CharField(max_length=32, primary_key=True, db_column='u_name')
     u_pwd = models.CharField(max_length=32)
     u_email = models.CharField(max_length=32, unique=True)
+    u_icon = models.ImageField(upload_to='icons')
+    is_active = models.BooleanField(default=False)
     is_delete = models.BooleanField(default=False)
     objects = FilterDelManager()
+
+    def __str__(self):
+        return self.u_name
 
     class Meta:
         db_table = 'user'
 
     @staticmethod
-    def generate_hash(password):
+    def __generate_hash(password):
         sha = hashlib.sha512()
         sha.update(password.encode('utf-8'))
         return sha.hexdigest()
 
     def set_pwd(self, password):
-        self.pwd = self.generate_hash(password)
+        self.pwd = self.__generate_hash(password)
 
     def check_pwd(self, password):
-        return self.pwd == self.generate_hash(password)
+        return self.pwd == self.__generate_hash(password)

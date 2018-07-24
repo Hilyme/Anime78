@@ -6,8 +6,9 @@ from django.conf.urls import url
 
 from App import views
 
-urlpatterns = {
+urlpatterns = [
     url(r'^index/', views.index, name='index'),
     url(r'^register/', views.Register.as_view(), name='register'),
     url(r'^login/', views.Login.as_view(), name='login'),
-}
+    url(r'^userinfo/(?P<pk>[\s\S]+)', views.UserInfo.as_view(), name='userinfo'),
+]
